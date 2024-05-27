@@ -6,7 +6,7 @@
 	"scripts": {
 		"build": "bun run format && remix vite:build",
 		"deploy": "npm run build && npm wrangler pages deploy",
-		"dev": "remix vite:build && wrangler pages dev ./build/client && wrangler pages dev ./build/server",
+		"dev": "bun run format && remix vite:build && wrangler pages dev ./build/client && wrangler pages dev ./build/server",
 		"format": "biome format --write --javascript-formatter-enabled=true ./",
 		"lint": "biome lint --apply ./",
 		"start": "wrangler pages dev ./build/client && wrangler pages dev ./build/server",

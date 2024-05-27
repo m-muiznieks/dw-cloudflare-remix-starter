@@ -1,12 +1,15 @@
-import type { LoaderFunctionArgs } from "@remix-run/cloudflare";
-import { authenticator } from "~/services/auth.server";
+import type { AppLoadContext, LoaderFunctionArgs } from "@remix-run/cloudflare";
+import { createAuthenticator } from "~/services/auth.server";
 
-export const loader = async ({ request }: LoaderFunctionArgs) => {
+interface Context extends LoaderFunctionArgs {
+	context: AppLoadContext;
+}
+export const loader = async ({ request, context }: Context) => {
+	const authenticator = createAuthenticator(context);
 	const checkUser = await authenticator.isAuthenticated(request, {
 		failureRedirect: "/login",
 	});
 
-	console.log("LOADER", checkUser);
 	return checkUser;
 };
 export default function Dashboard() {

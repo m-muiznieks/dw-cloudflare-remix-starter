@@ -10,6 +10,7 @@ declare global {
 
 // Function to get the PrismaClient instance
 export const prismaDB = (c?: AppLoadContext) => {
+	console.log("CONTEXT IN DB", c);
 	if (!c) {
 		throw new Error("No context found");
 	}

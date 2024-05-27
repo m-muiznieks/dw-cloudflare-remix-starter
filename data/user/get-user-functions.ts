@@ -16,9 +16,10 @@ export const _getUserByEmail = async (
 	if (!email) {
 		return { error: "Email is required!" };
 	}
-
+	console.log("CONTEXT", c);
 	try {
 		const db = prismaDB(c);
+
 		const user = (await db.user.findUnique({
 			where: { email },
 			include: {
@@ -30,7 +31,7 @@ export const _getUserByEmail = async (
 				},
 			},
 		})) as UserWithRole;
-
+		console.log("USER FROM DB DATA", user);
 		if (!user) {
 			return { error: "User not found!" };
 		}

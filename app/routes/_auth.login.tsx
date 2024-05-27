@@ -1,13 +1,17 @@
-import type { ActionFunctionArgs, LoaderFunctionArgs } from "@remix-run/node";
+import type { ActionFunctionArgs } from "@remix-run/node";
 import { json, redirect, useActionData } from "@remix-run/react";
 import { UserLoginForm } from "components/forms/auth/form-user-login";
 import type { AuthenticatedUserSchema } from "schemas/user/user-auth-schema";
 import type { z } from "zod";
-import { authenticator } from "~/services/auth.server";
-import { commitSession, getSession } from "../services/session.server";
+import { createAuthenticator } from "~/services/auth.server";
+import { getSessionStorage } from "../services/session.server";
+import type { AppLoadContext } from "@remix-run/cloudflare";
 
 // Define a type for the User
 type User = z.infer<typeof AuthenticatedUserSchema>;
+interface Context extends ActionFunctionArgs {
+	context: AppLoadContext;
+}
 
 // Define a union type for the action data
 type ActionData = { user?: User; error?: string };
@@ -27,14 +31,18 @@ export default function Screen() {
 	);
 }
 
-export const action = async ({ request }: ActionFunctionArgs) => {
+export const action = async ({ request, context }: Context) => {
+	const sessionStorage = getSessionStorage(context);
+	const { getSession, commitSession } = sessionStorage;
+	const authenticator = createAuthenticator(context);
+
 	const session = await getSession(request.headers.get("Cookie"));
 	try {
-		console.log("ACTION");
+		console.log("CONTEXT HERE", context);
 		const user = await authenticator.authenticate("user-pass", request, {
 			throwOnError: true,
+			context, // Pass the context here
 		});
-		console.log("ACTION USER", user);
 
 		session.set("user", user);
 
@@ -52,7 +60,8 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 	}
 };
 
-export const loader = async ({ request }: LoaderFunctionArgs) => {
+export const loader = async ({ request, context }: Context) => {
+	const authenticator = createAuthenticator(context);
 	const checkUser = await authenticator.isAuthenticated(request, {
 		successRedirect: "/dashboard",
 	});
