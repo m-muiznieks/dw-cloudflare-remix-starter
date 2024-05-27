@@ -1,0 +1,13 @@
+node_modules
+
+/.cache
+/build
+.env
+.dev.vars
+
+.wrangler
+wrangler.toml
+
+package-lock.json
+bun.lockb
+dist
