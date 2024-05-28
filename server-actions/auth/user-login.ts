@@ -1,6 +1,6 @@
 import type { User } from "@prisma/client";
 import bcrypt from "bcryptjs";
-import { _getUserByEmail } from "data/user/get-user-functions";
+import { _getUserByEmail } from "data/user/get-user-data";
 import {
 	AuthenticatedUserSchema,
 	type UserAuthSchema,

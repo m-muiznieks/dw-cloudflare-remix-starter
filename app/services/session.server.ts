@@ -39,9 +39,7 @@ export const isUserLoggedInServerSide = async ({
 	return !!checkUser?.email;
 };
 
-
-
-export const isUserLoggedInClientSide = async ({
+export const isUserLoggedIn = async ({
 	request,
 	context,
 }: LoaderFunctionArgs): Promise<boolean> => {

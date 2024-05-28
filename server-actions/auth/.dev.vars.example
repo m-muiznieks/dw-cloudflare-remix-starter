@@ -1,0 +1,8 @@
+//Env variables that are used in this code. Fill in their values and add them to .dev.vars file. and Environment varibales in Cloudflare project settings.
+
+NODE_ENV=development #<< == Change according to environment (development or production)
+DATABASE_URL= #<< == Used in for the Prisma, in /lib/db.ts file
+AUTH_SECRET= #<< == Used in Auth flow
+
+// ADDITIONALLY CREATE A .env FILE FOR THE PRISMA DIRECT_DATABASE_URL
+DIRECT_DATABASE_URL = #<< == Used in the schema.prisma file. If you don't want to use it - delete it from the schema.prisma file configuration. 

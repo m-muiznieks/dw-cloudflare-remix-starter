@@ -10,7 +10,7 @@ export const loader = async ({ request, context }: Context) => {
 	const checkUser = await authenticator.isAuthenticated(request, {
 		failureRedirect: DEFAULT_LOGOUT_REDIRECT,
 	});
-	console.log("checkUser", checkUser);
+
 	return checkUser;
 };
 export default function Dashboard() {

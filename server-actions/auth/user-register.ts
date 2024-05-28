@@ -1,7 +1,7 @@
 import type { User } from "@prisma/client";
 import type { AppLoadContext } from "@remix-run/cloudflare";
 import bcrypt from "bcryptjs";
-import { _getUserByEmail } from "data/user/get-user-functions";
+import { _getUserByEmail } from "data/user/get-user-data";
 import { prismaDB } from "lib/db";
 import { CreateNewUserSchema } from "schemas/user/create-new-user-schema";
 import type { z } from "zod";

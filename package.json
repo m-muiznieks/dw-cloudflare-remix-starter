@@ -6,10 +6,10 @@
 	"scripts": {
 		"build": "bun run format && remix vite:build",
 		"deploy": "npm run build && npm wrangler pages deploy",
-		"dev": "bun run format && remix vite:build && wrangler pages dev ./build/client && wrangler pages dev ./build/server",
+		"dev": "bun run format && remix vite:build && wrangler pages dev ./build/client",
 		"format": "biome format --write --javascript-formatter-enabled=true ./",
 		"lint": "biome lint --apply ./",
-		"start": "wrangler pages dev ./build/client && wrangler pages dev ./build/server",
+		"start": "wrangler pages dev ./build/client",
 		"typecheck": "tsc",
 		"typegen": "wrangler types",
 		"preview": "npm run build && wrangler pages dev",
