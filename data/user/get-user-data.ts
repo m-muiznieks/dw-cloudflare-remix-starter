@@ -1,6 +1,6 @@
 import type { User } from "@prisma/client/edge";
-import type { AppLoadContext } from "@remix-run/cloudflare";
 import { prismaDB } from "lib/db";
+import type { AppLoadContext } from "@remix-run/cloudflare";
 
 type UserWithRole = User & {
 	role: {
@@ -11,14 +11,14 @@ type UserWithRole = User & {
 
 export const _getUserByEmail = async (
 	email: string,
-	c?: AppLoadContext,
+	context: AppLoadContext,
 ): Promise<User | { error: string }> => {
 	if (!email) {
 		return { error: "Email is required!" };
 	}
-	console.log("CONTEXT", c);
+
 	try {
-		const db = prismaDB(c);
+		const db = prismaDB(context);
 
 		const user = (await db.user.findUnique({
 			where: { email },
@@ -31,7 +31,7 @@ export const _getUserByEmail = async (
 				},
 			},
 		})) as UserWithRole;
-		console.log("USER FROM DB DATA", user);
+		
 		if (!user) {
 			return { error: "User not found!" };
 		}
@@ -43,14 +43,14 @@ export const _getUserByEmail = async (
 
 export const _getUserById = async (
 	id: string,
-	c?: AppLoadContext,
+	context: AppLoadContext,
 ): Promise<User | null | { error: string }> => {
 	if (!id) {
 		return { error: "Id is required!" };
 	}
 
 	try {
-		const db = prismaDB(c);
+		const db = prismaDB(context);
 		const user = await db.user.findUnique({
 			where: { id },
 			include: {
@@ -68,14 +68,14 @@ export const _getUserById = async (
 
 export const _getUserByUsername = async (
 	username: string,
-	c?: AppLoadContext,
+	context: AppLoadContext,
 ): Promise<User | null | { error: string }> => {
 	if (!username) {
 		return { error: "Username is required!" };
 	}
 
 	try {
-		const db = prismaDB(c);
+		const db = prismaDB(context);
 		const user = await db.user.findUnique({
 			where: { userName: username },
 			include: {

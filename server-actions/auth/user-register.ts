@@ -1,15 +1,18 @@
 import type { User } from "@prisma/client";
-import type { AppLoadContext } from "@remix-run/cloudflare";
 import bcrypt from "bcryptjs";
 import { _getUserByEmail } from "data/user/get-user-data";
 import { prismaDB } from "lib/db";
 import { CreateNewUserSchema } from "schemas/user/create-new-user-schema";
 import type { z } from "zod";
+import type { AppLoadContext } from "@remix-run/cloudflare";
 
 type NewUser = z.infer<typeof CreateNewUserSchema>;
 
-export const RegisterUser = async (values: NewUser, c?: AppLoadContext) => {
-	const db = prismaDB(c);
+export const RegisterUser = async (
+	values: NewUser,
+	context: AppLoadContext,
+) => {
+	const db = prismaDB(context);
 	const validatedFields = CreateNewUserSchema.safeParse(values);
 
 	if (!validatedFields.success) {
@@ -19,7 +22,10 @@ export const RegisterUser = async (values: NewUser, c?: AppLoadContext) => {
 	const { email, password } = validatedFields.data;
 
 	try {
-		const checkEmail = (await _getUserByEmail(email as string, c)) as User;
+		const checkEmail = (await _getUserByEmail(
+			email as string,
+			context,
+		)) as User;
 
 		if (checkEmail?.id) {
 			return { error: "Email already used!" };

@@ -40,3 +40,6 @@ This project is not production ready. Use it at your own risk. I am not responsi
 
 -   Hidration issues.
 -   Don't be surprised if at some point the Cloudflare Pages build fails showing the `error 127` message. I  am waiting for reappearing of the issue, to report it, as I am sure, that it is not related to the project itself, but rather to the Cloudflare Pages. It can be solved simply by deleting and redeploying the application. :/ To be honest - I am using only a github repo connection, I dont know if that can surface by deploying the application using wrangler. I will try to find out and update the issue if I find out.
+
+### Disclaimer
+I want to be honest and not taking any credits for the code written. As I am not a professional developer, I rely heavily on the work of others and using  AI tools to put things together. :) So.. is this "powered by A.I."? :)) 

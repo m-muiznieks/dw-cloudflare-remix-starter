@@ -20,7 +20,7 @@ type UserWithRole = User & {
 
 export const login = async (
 	values: CredentialsType,
-	c: AppLoadContext | undefined,
+	context: AppLoadContext,
 ): Promise<UserType | { error: string }> => {
 	const validatedFields = AuthenticatedUserSchema.safeParse(values);
 
@@ -30,7 +30,10 @@ export const login = async (
 
 	const { email, password } = validatedFields.data;
 
-	const user = (await _getUserByEmail(email as string, c)) as UserWithRole;
+	const user = (await _getUserByEmail(
+		email as string,
+		context,
+	)) as UserWithRole;
 
 	if (!user || !user.password) {
 		return { error: "User not found" };

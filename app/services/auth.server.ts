@@ -24,6 +24,10 @@ export const createAuthenticator = (context: AppLoadContext) => {
 
 	authenticator.use(
 		new FormStrategy(async ({ form, context }) => {
+			if (!context) {
+				throw new Error("Unexpected error (ctx).");
+			}
+
 			let email = form.get("email");
 			let password = form.get("password");
 			if (!email || !password) {

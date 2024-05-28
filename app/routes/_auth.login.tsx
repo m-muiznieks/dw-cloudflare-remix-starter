@@ -5,14 +5,11 @@ import type { AuthenticatedUserSchema } from "schemas/user/user-auth-schema";
 import type { z } from "zod";
 import { createAuthenticator } from "~/services/auth.server";
 import { getSessionStorage } from "../services/session.server";
-import type { AppLoadContext } from "@remix-run/cloudflare";
+import type { LoaderFunctionArgs } from "@remix-run/cloudflare";
 import { DEFAULT_LOGIN_REDIRECT } from "routes";
 
 // Define a type for the User
 type User = z.infer<typeof AuthenticatedUserSchema>;
-interface Context extends ActionFunctionArgs {
-	context: AppLoadContext;
-}
 
 // Define a union type for the action data
 type ActionData = { user?: User; error?: string };
@@ -32,7 +29,7 @@ export default function Screen() {
 	);
 }
 
-export const action = async ({ request, context }: Context) => {
+export const action = async ({ request, context }: ActionFunctionArgs) => {
 	const sessionStorage = getSessionStorage(context);
 	const { getSession, commitSession } = sessionStorage;
 	const authenticator = createAuthenticator(context);
@@ -58,7 +55,7 @@ export const action = async ({ request, context }: Context) => {
 	}
 };
 
-export const loader = async ({ request, context }: Context) => {
+export const loader = async ({ request, context }: LoaderFunctionArgs) => {
 	const authenticator = createAuthenticator(context);
 	const checkUser = await authenticator.isAuthenticated(request, {
 		successRedirect: DEFAULT_LOGIN_REDIRECT,

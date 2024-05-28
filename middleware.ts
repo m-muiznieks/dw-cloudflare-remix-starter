@@ -1,3 +1,4 @@
+import type { AppLoadContext } from "@remix-run/cloudflare";
 import type { MiddlewareHandler } from "hono";
 
 declare module "hono" {
@@ -20,7 +21,9 @@ type Bindings = {
 
 const honoMW: MiddlewareHandler<{
 	Bindings: Bindings;
+	Context: AppLoadContext;
 }> = async (c, next) => {
+	console.log("ENV TEST", c.env.NODE_ENV);
 	console.log("hello from honoMW");
 
 	await next();

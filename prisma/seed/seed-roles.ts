@@ -1,9 +1,11 @@
 import { Permissions, Roles } from "data/user/user-permissions";
-import { db } from "lib/db";
+import { prismaDB } from "lib/db";
+import type { AppLoadContext } from "@remix-run/cloudflare";
 
-//https://github.com/prisma/prisma/discussions/20369#discussioncomment-7014464
+// Interface to ensure correct type for context
 
-const seedRolesAndPermissions = async () => {
+const seedRolesAndPermissions = async (context: AppLoadContext) => {
+	const db = prismaDB(context);
 	for (const permission of Object.values(Permissions)) {
 		await db.permission.upsert({
 			where: { name: permission.name },
@@ -38,6 +40,4 @@ const seedRolesAndPermissions = async () => {
 	}
 };
 
-seedRolesAndPermissions()
-	.catch(console.error)
-	.finally(() => db.$disconnect());
+export { seedRolesAndPermissions };

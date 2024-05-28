@@ -1,6 +1,5 @@
 import { createCookieSessionStorage } from "@remix-run/cloudflare";
-import type { AppLoadContext, LoaderFunctionArgs } from "@remix-run/cloudflare";
-import { createAuthenticator } from "./auth.server";
+import type { AppLoadContext } from "@remix-run/cloudflare";
 
 export const createSessionStorage = (context: AppLoadContext) => {
 	const { AUTH_SECRET, NODE_ENV } = context.cloudflare.env;
@@ -22,31 +21,19 @@ export const getSessionStorage = (context: AppLoadContext) => {
 	return createSessionStorage(context);
 };
 
-interface Context {
-	request: Request;
-	context: AppLoadContext;
-}
+// interface CTX {
+// 	request: Request;
+// 	c: Context;
+// }
 
-export const isUserLoggedInServerSide = async ({
-	request,
-	context,
-}: Context): Promise<boolean> => {
-	const authenticator = createAuthenticator(context);
-	const checkUser = await authenticator.isAuthenticated(request, {
-		//failureRedirect: DEFAULT_LOGOUT_REDIRECT,
-	});
+// export const isUserLoggedInServerSide = async ({
+// 	request,
+// 	c,
+// }: CTX): Promise<boolean> => {
+// 	const authenticator = createAuthenticator(c);
+// 	const checkUser = await authenticator.isAuthenticated(request, {
+// 		//failureRedirect: DEFAULT_LOGOUT_REDIRECT,
+// 	});
 
-	return !!checkUser?.email;
-};
-
-export const isUserLoggedIn = async ({
-	request,
-	context,
-}: LoaderFunctionArgs): Promise<boolean> => {
-	const authenticator = createAuthenticator(context);
-	const checkUser = await authenticator.isAuthenticated(request, {
-		//failureRedirect: DEFAULT_LOGOUT_REDIRECT,
-	});
-
-	return !!checkUser?.email;
-};
+// 	return !!checkUser?.email;
+// };

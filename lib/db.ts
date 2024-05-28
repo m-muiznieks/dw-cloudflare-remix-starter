@@ -9,12 +9,12 @@ declare global {
 }
 
 // Function to get the PrismaClient instance
-export const prismaDB = (c?: AppLoadContext) => {
-	console.log("CONTEXT IN DB", c);
-	if (!c) {
-		throw new Error("No context found");
+export const prismaDB = (context: AppLoadContext) => {
+	if (!context) {
+		throw new Error("Sorry, unexpected error happened");
 	}
-	const { DATABASE_URL, NODE_ENV } = c.cloudflare.env;
+
+	const { DATABASE_URL, NODE_ENV } = context.cloudflare.env;
 
 	const databaseUrl = DATABASE_URL;
 	const ENVIRONMENT: string = NODE_ENV; // production or development
