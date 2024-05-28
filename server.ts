@@ -1,14 +1,10 @@
-//import type { RequestHandler } from "@remix-run/cloudflare";
-//import type { AppLoadContext } from "@remix-run/cloudflare";
 import { Hono } from "hono";
 import { poweredBy } from "hono/powered-by";
-import { honoMW } from "middleware";
-//import { staticAssets } from "remix-hono/cloudflare";
+import honoMW from "middleware";
 import { remix } from "remix-hono/handler";
 
 const app = new Hono<{
 	Bindings: {
-		MY_VAR: string;
 		DATABASE_URL: string;
 		NODE_ENV: string;
 		AUTH_SECRET: string;
@@ -18,7 +14,6 @@ const app = new Hono<{
 //let handler: RequestHandler | undefined;
 
 app.use(poweredBy());
-app.get("/hono", (c) => c.text(`Hono, ${c.env.MY_VAR}`));
 
 app.use(
 	// async (c, next) => {

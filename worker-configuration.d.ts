@@ -2,7 +2,6 @@
 // by running `wrangler types`
 
 interface Env {
-	MY_VAR: string;
 	NODE_ENV: string;
 	DATABASE_URL: string;
 	AUTH_SECRET: string;

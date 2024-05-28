@@ -27,11 +27,10 @@ export const login = async (
 	if (!validatedFields.success) {
 		return { error: "Invalid credentials" };
 	}
-	console.log("VALIDATED FIELDS", validatedFields.data);
+
 	const { email, password } = validatedFields.data;
 
 	const user = (await _getUserByEmail(email as string, c)) as UserWithRole;
-	console.log("GET USER BY EMAIL", user);
 
 	if (!user || !user.password) {
 		return { error: "User not found" };

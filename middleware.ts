@@ -1,5 +1,16 @@
 import type { MiddlewareHandler } from "hono";
 
+declare module "hono" {
+	//here we adjust the values that can be passed to the global context
+	// they are set as c.set('key1', 'value1') and c.set('key2', ['value1', 'value2'])
+	// https://hono.dev/api/context#contextvariablemap
+	interface ContextVariableMap {
+		key1: string;
+		key2: string[];
+	}
+}
+
+//Everything that must be passed to the middleware.
 type Bindings = {
 	MY_VAR: string;
 	DATABASE_URL: string;
@@ -7,10 +18,12 @@ type Bindings = {
 	AUTH_SECRET: string;
 };
 
-export const honoMW: MiddlewareHandler<{ Bindings: Bindings }> = async (
-	c,
-	next,
-) => {
+const honoMW: MiddlewareHandler<{
+	Bindings: Bindings;
+}> = async (c, next) => {
 	console.log("hello from honoMW");
+
 	await next();
 };
+
+export default honoMW;

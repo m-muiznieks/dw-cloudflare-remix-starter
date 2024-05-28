@@ -6,6 +6,7 @@ import type { z } from "zod";
 import { createAuthenticator } from "~/services/auth.server";
 import { getSessionStorage } from "../services/session.server";
 import type { AppLoadContext } from "@remix-run/cloudflare";
+import { DEFAULT_LOGIN_REDIRECT } from "routes";
 
 // Define a type for the User
 type User = z.infer<typeof AuthenticatedUserSchema>;
@@ -38,7 +39,6 @@ export const action = async ({ request, context }: Context) => {
 
 	const session = await getSession(request.headers.get("Cookie"));
 	try {
-		console.log("CONTEXT HERE", context);
 		const user = await authenticator.authenticate("user-pass", request, {
 			throwOnError: true,
 			context, // Pass the context here
@@ -53,8 +53,6 @@ export const action = async ({ request, context }: Context) => {
 			},
 		});
 	} catch (error) {
-		console.log("ACTION ERROR", error);
-
 		// If authentication fails, return the error message
 		return json({ error: (error as Error).message }, { status: 400 });
 	}
@@ -63,7 +61,7 @@ export const action = async ({ request, context }: Context) => {
 export const loader = async ({ request, context }: Context) => {
 	const authenticator = createAuthenticator(context);
 	const checkUser = await authenticator.isAuthenticated(request, {
-		successRedirect: "/dashboard",
+		successRedirect: DEFAULT_LOGIN_REDIRECT,
 	});
 
 	return checkUser;
