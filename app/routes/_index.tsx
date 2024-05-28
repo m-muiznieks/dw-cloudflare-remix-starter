@@ -1,4 +1,4 @@
-import type { AppLoadContext, MetaFunction } from "@remix-run/cloudflare";
+import type { LoaderFunctionArgs, MetaFunction } from "@remix-run/cloudflare";
 import { json } from "@remix-run/cloudflare";
 import { useLoaderData } from "@remix-run/react";
 
@@ -6,10 +6,19 @@ export const meta: MetaFunction = () => {
 	return [{ title: "Remix and Hono on Vite" }];
 };
 
-export const loader = async (context: AppLoadContext) => {
-	const { env } = context.cloudflare;
-	const { NODE_ENV } = env;
-	return json({ myVar: NODE_ENV });
+// interface Props extends LoaderFunctionArgs {
+// 	context: AppLoadContext;
+// }
+
+export const loader = async ({ context }: LoaderFunctionArgs) => {
+	console.log("HONO CONTEXT", context.hono.env.NODE_ENV);
+	const test = context.cloudflare.env.NODE_ENV;
+	console.log("CLOUDFLARE TEST", test);
+
+	// console.log("HONO VAR", c.env);
+	// console.log("CF", context.cloudflare);
+
+	return json({ myVar: test });
 };
 
 export default function Index() {
@@ -19,7 +28,8 @@ export default function Index() {
 		<div>
 			<h1>Welcome Remix and Hono on Vite</h1>
 			<ul>
-				<li>Remix, {myVar}</li>
+				<li>Cloudflare: {myVar}</li>
+
 				<li>
 					<a href="/hono">Hono</a>
 				</li>

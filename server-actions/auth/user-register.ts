@@ -4,14 +4,11 @@ import { _getUserByEmail } from "data/user/get-user-data";
 import { prismaDB } from "lib/db";
 import { CreateNewUserSchema } from "schemas/user/create-new-user-schema";
 import type { z } from "zod";
-import type { AppLoadContext } from "@remix-run/cloudflare";
+import type { Bindings } from "server";
 
 type NewUser = z.infer<typeof CreateNewUserSchema>;
 
-export const RegisterUser = async (
-	values: NewUser,
-	context: AppLoadContext,
-) => {
+export const RegisterUser = async (values: NewUser, context: Bindings) => {
 	const db = prismaDB(context);
 	const validatedFields = CreateNewUserSchema.safeParse(values);
 

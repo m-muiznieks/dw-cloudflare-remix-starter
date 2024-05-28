@@ -1,10 +1,10 @@
 import { Permissions, Roles } from "data/user/user-permissions";
 import { prismaDB } from "lib/db";
-import type { AppLoadContext } from "@remix-run/cloudflare";
+import type { Bindings } from "server";
 
 // Interface to ensure correct type for context
 
-const seedRolesAndPermissions = async (context: AppLoadContext) => {
+const seedRolesAndPermissions = async (context: Bindings) => {
 	const db = prismaDB(context);
 	for (const permission of Object.values(Permissions)) {
 		await db.permission.upsert({

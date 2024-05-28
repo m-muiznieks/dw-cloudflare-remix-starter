@@ -1,12 +1,12 @@
-import type { ActionFunctionArgs } from "@remix-run/node";
 import { json, redirect, useActionData } from "@remix-run/react";
 import { UserLoginForm } from "components/forms/auth/form-user-login";
 import type { AuthenticatedUserSchema } from "schemas/user/user-auth-schema";
 import type { z } from "zod";
 import { createAuthenticator } from "~/services/auth.server";
 import { getSessionStorage } from "../services/session.server";
-import type { LoaderFunctionArgs } from "@remix-run/cloudflare";
 import { DEFAULT_LOGIN_REDIRECT } from "routes";
+import type { Bindings } from "server";
+import type { AppLoadContext } from "@remix-run/cloudflare";
 
 // Define a type for the User
 type User = z.infer<typeof AuthenticatedUserSchema>;
@@ -29,8 +29,12 @@ export default function Screen() {
 	);
 }
 
-export const action = async ({ request, context }: ActionFunctionArgs) => {
-	const sessionStorage = getSessionStorage(context);
+export const action = async ({
+	request,
+	context,
+}: { request: Request; context: AppLoadContext }) => {
+	const env = context.cloudflare.env;
+	const sessionStorage = getSessionStorage(env);
 	const { getSession, commitSession } = sessionStorage;
 	const authenticator = createAuthenticator(context);
 
@@ -55,7 +59,10 @@ export const action = async ({ request, context }: ActionFunctionArgs) => {
 	}
 };
 
-export const loader = async ({ request, context }: LoaderFunctionArgs) => {
+export const loader = async ({
+	request,
+	context,
+}: { request: Request; context: Bindings }) => {
 	const authenticator = createAuthenticator(context);
 	const checkUser = await authenticator.isAuthenticated(request, {
 		successRedirect: DEFAULT_LOGIN_REDIRECT,

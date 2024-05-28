@@ -1,7 +1,7 @@
 // prisma-client.ts
 import { PrismaClient } from "@prisma/client/edge";
 import { withAccelerate } from "@prisma/extension-accelerate";
-import type { AppLoadContext } from "@remix-run/cloudflare";
+import type { Bindings } from "server";
 
 // Declare a global variable to store the PrismaClient instance
 declare global {
@@ -9,12 +9,12 @@ declare global {
 }
 
 // Function to get the PrismaClient instance
-export const prismaDB = (context: AppLoadContext) => {
-	if (!context) {
+export const prismaDB = (ENV: Bindings) => {
+	if (!ENV) {
 		throw new Error("Sorry, unexpected error happened");
 	}
 
-	const { DATABASE_URL, NODE_ENV } = context.cloudflare.env;
+	const { DATABASE_URL, NODE_ENV } = ENV;
 
 	const databaseUrl = DATABASE_URL;
 	const ENVIRONMENT: string = NODE_ENV; // production or development

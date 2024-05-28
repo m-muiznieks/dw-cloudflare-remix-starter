@@ -6,7 +6,7 @@ import {
 	type UserAuthSchema,
 } from "schemas/user/user-auth-schema";
 import type { z } from "zod";
-import type { AppLoadContext } from "@remix-run/cloudflare";
+import type { Bindings } from "server";
 
 type CredentialsType = z.infer<typeof AuthenticatedUserSchema>;
 type UserType = z.infer<typeof UserAuthSchema>;
@@ -20,7 +20,7 @@ type UserWithRole = User & {
 
 export const login = async (
 	values: CredentialsType,
-	context: AppLoadContext,
+	context: Bindings,
 ): Promise<UserType | { error: string }> => {
 	const validatedFields = AuthenticatedUserSchema.safeParse(values);
 

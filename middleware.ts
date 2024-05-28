@@ -1,5 +1,6 @@
-import type { AppLoadContext } from "@remix-run/cloudflare";
 import type { MiddlewareHandler } from "hono";
+import type { Bindings, Variables } from "./server";
+import { isUserLoggedInServerSide } from "~/services/session.server";
 
 declare module "hono" {
 	//here we adjust the values that can be passed to the global context
@@ -11,21 +12,19 @@ declare module "hono" {
 	}
 }
 
-//Everything that must be passed to the middleware.
-type Bindings = {
-	MY_VAR: string;
-	DATABASE_URL: string;
-	NODE_ENV: string;
-	AUTH_SECRET: string;
-};
+//BINDINGS ARE IMPORTED FROM THE SERVER.TS FILE
 
 const honoMW: MiddlewareHandler<{
 	Bindings: Bindings;
-	Context: AppLoadContext;
+	Variables: Variables;
 }> = async (c, next) => {
-	console.log("ENV TEST", c.env.NODE_ENV);
-	console.log("hello from honoMW");
+	console.log("ENV TEST", c.env);
 
+	const isli = await isUserLoggedInServerSide({
+		request: c.req.raw as Request,
+		context: c.env as Bindings,
+	});
+	console.log("isLoggedIn", isli);
 	await next();
 };
 

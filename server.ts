@@ -2,33 +2,49 @@ import { Hono } from "hono";
 import { poweredBy } from "hono/powered-by";
 import honoMW from "middleware";
 import { remix } from "remix-hono/handler";
+import type { AppLoadContext } from "@remix-run/cloudflare";
 
-const app = new Hono<{
-	Bindings: {
-		DATABASE_URL: string;
-		NODE_ENV: string;
-		AUTH_SECRET: string;
-	};
-}>().use(honoMW);
+export type Bindings = {
+	DATABASE_URL: string;
+	NODE_ENV: string;
+	AUTH_SECRET: string;
+};
 
-app.use(poweredBy());
+export type Variables = {
+	isLoggedIn: boolean;
+};
 
-app.use(async (c, next) => {
+type ContextEnv = {
+	Bindings: Bindings;
+	Variables: Variables;
+	Cloudflare: AppLoadContext;
+};
+
+const server = new Hono<ContextEnv>().use(honoMW);
+
+server.use(poweredBy());
+
+server.use(async (c, next) => {
 	//@ts-ignore
-	const serverBuild = await import("./build/server/index.js");
+	const build = await import("./build/server/index.js");
+	const currentMode: "development" | "production" =
+		c.env.NODE_ENV === "production" ? "production" : "development";
 
 	return remix({
-		build: serverBuild,
-		mode: "production",
+		build: build,
+		mode: currentMode,
 		// @ts-ignore
 		getLoadContext(c) {
+			//const sessionstorage = getSessionStorage(c);
+
 			return {
 				cloudflare: {
-					env: c.env,
+					env: c.env as Bindings,
 				},
+				hono: c,
 			};
 		},
 	})(c, next);
 });
 
-export default app;
+export default server;

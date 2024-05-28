@@ -1,8 +1,9 @@
 import { createCookieSessionStorage } from "@remix-run/cloudflare";
-import type { AppLoadContext } from "@remix-run/cloudflare";
+import { createAuthenticator } from "./auth.server";
+import type { Bindings } from "server";
 
-export const createSessionStorage = (context: AppLoadContext) => {
-	const { AUTH_SECRET, NODE_ENV } = context.cloudflare.env;
+export const createSessionStorage = (context: Bindings) => {
+	const { AUTH_SECRET, NODE_ENV } = context;
 
 	return createCookieSessionStorage({
 		cookie: {
@@ -17,23 +18,18 @@ export const createSessionStorage = (context: AppLoadContext) => {
 };
 
 // Function to get session utilities
-export const getSessionStorage = (context: AppLoadContext) => {
+export const getSessionStorage = (context: Bindings) => {
 	return createSessionStorage(context);
 };
 
-// interface CTX {
-// 	request: Request;
-// 	c: Context;
-// }
+export const isUserLoggedInServerSide = async ({
+	request,
+	context,
+}: { request: Request; context: Bindings }): Promise<boolean> => {
+	const authenticator = createAuthenticator(context);
+	const checkUser = await authenticator.isAuthenticated(request, {
+		//failureRedirect: DEFAULT_LOGOUT_REDIRECT,
+	});
 
-// export const isUserLoggedInServerSide = async ({
-// 	request,
-// 	c,
-// }: CTX): Promise<boolean> => {
-// 	const authenticator = createAuthenticator(c);
-// 	const checkUser = await authenticator.isAuthenticated(request, {
-// 		//failureRedirect: DEFAULT_LOGOUT_REDIRECT,
-// 	});
-
-// 	return !!checkUser?.email;
-// };
+	return !!checkUser?.email;
+};
