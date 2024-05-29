@@ -45,7 +45,7 @@ I recommend to use the [wrangler](https://developers.cloudflare.com/workers/wran
 2. `bun wrangler pages project create [your project name here]`. This will create a new project. 
 3. `bun run deploy` to use existing settings or `bun wrangler pages deploy build/client`. Additionally you can add `--commit-dirty=true` to silence the git commit message warning.
 4. Thats all, wrangler will create a new project and deploy the application to Cloudflare Pages and show you the URL. Or visit the [dashboard](https://dash.cloudflare.com/) and find your project and look for the address there. 
-5. Dont forget to add environment variables to the project at the project settings page. Otherwise the application will not work.
+5. Dont forget to add environment variables to the project at the project settings page. Otherwise the application will not work. Env variables will be available in next deploy, so you will have to redeploy the application to get the changes.
 
 ## Known issues
 
