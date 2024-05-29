@@ -5,6 +5,8 @@ This project is a starter template designed to provide a faster and simpler star
 
 This template demonstrates how to use Remix.run and Hono.dev together to create a web application that can be deployed on Cloudflare Pages. Hono offers middleware functionality and simplifies API development, including routing, error handling, and request processing.
 
+This example already uses hono middleware, including basic authentication and user session management at middleware level.
+
 ## Credits
 
 The idea for this project is based on the work of [Yusuke Wada](https://github.com/yusukebe). I used his [Remix and Hono on Vite](https://github.com/yusukebe/remix-and-hono-on-vite) as a foundation. If you are interested in the original source, please check out [Yusuke Wada's repo](https://github.com/yusukebe/remix-and-hono-on-vite).
@@ -25,7 +27,7 @@ This project is not production ready. Use it at your own risk. I am not responsi
 -   [Vite](https://vitejs.dev/) for building the client-side code.
 -   [Wrangler](https://developers.cloudflare.com/workers/wrangler/) for deploying the application to Cloudflare Pages.
 
-## How to use it
+## How to use it?
 
 1.  Clone the repository to your local machine.
 2.  Install the dependencies by running `npm install` or `bun install`, depending on your preferred package manager. Cloudflare pages uses `npm` by default, so Bun will not be used in deployment.
@@ -36,17 +38,18 @@ This project is not production ready. Use it at your own risk. I am not responsi
 7.  Project uses the [Biome](https://biomejs.dev/) code formatter. It will check and format your code on every build, as well as called separately by `npm run format` or `bun run format`. Configuration is within biome.jsonc file. See [Biome's documentation](https://biomejs.dev/guides/getting-started/) for more information.
 8.  Authentication is handled by [Remix Auth](https://remix.run/resources/remix-auth). Follow the instructions in the Remix Auth documentation to set up your own authentication flow. 
 
-## Known issues
-
--   Don't be surprised if at some point the Cloudflare Pages build fails showing the `error 127` message. Simply after install it does not find installed dependencies and even simple `npm run build` fails. This bug is not related to this project, but rather to the Cloudflare Pages and can be solved by deleting and redeploying the application (even previously deployed versions fall for this bug on redeploy). For that reason I suggest to use the [wrangler](https://developers.cloudflare.com/workers/wrangler/) for deploying the application to Cloudflare Pages.
-
-## How to install? 
+## How to deploy? 
 
 I recommend to use the [wrangler](https://developers.cloudflare.com/workers/wrangler/) for deploying the application to Cloudflare Pages. Don't forget to log in to your Cloudflare account.
-1. Install dependencies: `npm install` or `bun install`.
+1. Install dependencies: `npm install` or `bun install`. Add your `.dev.vars` file to the root of the project, see the .dev.vars.example file for an example of used keys.
 2. `bun wrangler pages project create [your project name here]`. This will create a new project. 
 3. `bun run deploy` to use existing settings or `bun wrangler pages deploy build/client`. Additionally you can add `--commit-dirty=true` to silence the git commit message warning.
 4. Thats all, wrangler will create a new project and deploy the application to Cloudflare Pages and show you the URL. Or visit the [dashboard](https://dash.cloudflare.com/) and find your project and look for the address there. 
+5. Dont forget to add environment variables to the project at the project settings page. Otherwise the application will not work.
+
+## Known issues
+
+-   Don't be surprised if at some point the Cloudflare Pages build fails showing the `error 127` message. Simply after install it does not find installed dependencies and even simple `npm run build` fails. This bug is not related to this project, but rather to the Cloudflare Pages and can be solved by deleting and redeploying the application (even previously deployed versions fall for this bug on redeploy). For that reason I suggest to use the [wrangler](https://developers.cloudflare.com/workers/wrangler/) for deploying the application to Cloudflare Pages.
 
 ### Disclaimer
 I want to be honest and not taking any credits for the code written. As I am not a professional developer, I rely heavily on the work of others and using  AI tools to put things together. :) So.. is this "powered by A.I."? :)) 
