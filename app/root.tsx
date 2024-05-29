@@ -30,7 +30,7 @@ export function Layout({ children }: Props) {
 				<Meta />
 				<Links />
 			</head>
-			<body className="font-inter">
+			<body className="font-inter bg-slate-400">
 				{children}
 				<ScrollRestoration />
 				<Scripts />
@@ -40,9 +40,5 @@ export function Layout({ children }: Props) {
 }
 
 export default function App() {
-	return (
-		<Layout>
-			<Outlet />
-		</Layout>
-	);
+	return <Outlet />;
 }

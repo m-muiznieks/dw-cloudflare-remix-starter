@@ -38,8 +38,15 @@ This project is not production ready. Use it at your own risk. I am not responsi
 
 ## Known issues
 
--   Hidration issues.
--   Don't be surprised if at some point the Cloudflare Pages build fails showing the `error 127` message. I  am waiting for reappearing of the issue, to report it, as I am sure, that it is not related to the project itself, but rather to the Cloudflare Pages. It can be solved simply by deleting and redeploying the application. :/ To be honest - I am using only a github repo connection, I dont know if that can surface by deploying the application using wrangler. I will try to find out and update the issue if I find out.
+-   Don't be surprised if at some point the Cloudflare Pages build fails showing the `error 127` message. Simply after install it does not find installed dependencies and even simple `npm run build` fails. This bug is not related to this project, but rather to the Cloudflare Pages and can be solved by deleting and redeploying the application (even previously deployed versions fall for this bug on redeploy). For that reason I suggest to use the [wrangler](https://developers.cloudflare.com/workers/wrangler/) for deploying the application to Cloudflare Pages.
+
+## How to install? 
+
+I recommend to use the [wrangler](https://developers.cloudflare.com/workers/wrangler/) for deploying the application to Cloudflare Pages. Don't forget to log in to your Cloudflare account.
+1. Install dependencies: `npm install` or `bun install`.
+2. `bun wrangler pages project create [your project name here]`. This will create a new project. 
+3. `bun run deploy` to use existing settings or `bun wrangler pages deploy build/client`. Additionally you can add `--commit-dirty=true` to silence the git commit message warning.
+4. Thats all, wrangler will create a new project and deploy the application to Cloudflare Pages and show you the URL. Or visit the [dashboard](https://dash.cloudflare.com/) and find your project and look for the address there. 
 
 ### Disclaimer
 I want to be honest and not taking any credits for the code written. As I am not a professional developer, I rely heavily on the work of others and using  AI tools to put things together. :) So.. is this "powered by A.I."? :)) 
