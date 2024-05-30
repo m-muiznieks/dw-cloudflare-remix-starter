@@ -7,7 +7,6 @@ import {
 } from "@remix-run/dev";
 import { defineConfig } from "vite";
 import tsconfigPaths from "vite-tsconfig-paths";
-import { remixPWA } from "@remix-pwa/dev";
 
 export default defineConfig({
 	ssr: {
@@ -25,6 +24,5 @@ export default defineConfig({
 			injectClientScript: false,
 		}),
 		tsconfigPaths(),
-		remixPWA(),
 	],
 });
