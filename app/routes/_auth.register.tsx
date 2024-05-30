@@ -44,8 +44,8 @@ export const action: ActionFunction = async ({ request, context }) => {
 	try {
 		type NewUser = z.infer<typeof CreateNewUserSchema>;
 
-		const { c } = context;
-		const user = await RegisterUser({ email, password } as NewUser, c);
+		const { env } = context.cloudflare;
+		const user = await RegisterUser({ email, password } as NewUser, env);
 		if (user.error) {
 			return json({ error: user.error }, { status: 400 });
 		}

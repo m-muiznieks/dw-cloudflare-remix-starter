@@ -1,6 +1,6 @@
 import type { MiddlewareHandler } from "hono";
 import type { Bindings, Variables } from "./server";
-import { isUserLoggedInServerSide } from "~/services/session.server";
+import { isUserLoggedInServerSide } from "~/services/auth/session.server";
 
 declare module "hono" {
 	//here we adjust the values that can be passed to the global context

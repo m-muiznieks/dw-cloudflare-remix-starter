@@ -1,6 +1,6 @@
 import type { LoaderFunctionArgs } from "@remix-run/cloudflare";
 import { DEFAULT_LOGOUT_REDIRECT } from "routes";
-import { createAuthenticator } from "~/services/auth.server";
+import { createAuthenticator } from "~/services/auth/auth.server";
 
 export const loader = async ({ request, context }: LoaderFunctionArgs) => {
 	const authenticator = createAuthenticator(context);
